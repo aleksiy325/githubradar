@@ -84,11 +84,37 @@
 </template>
 
 <script>
+import github from 'octonode';
+
 export default {
   name: 'HelloWorld',
+
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      loading: false,
+      post: null,
+      error: null
+    }
+  },
+
+  created () {
+    this.initGithub();
+    this.fetchData();
+  },
+
+  methods: {
+
+    initGithub () {
+      this.client = github.client();
+    },
+
+    fetchData () {
+      this.error = this.post = null;
+      this.loading = true;
+      this.client.get('/users/pksunkara', {}, (err, status, body, headers) => {
+        console.log(body); //json object
+      });
     }
   }
 }
