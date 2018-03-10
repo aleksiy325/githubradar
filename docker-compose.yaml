@@ -1,0 +1,12 @@
+version: "3.0"
+services:
+  web:
+    build: .
+    command: npm run dev
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - 8080:8080
+    environment:
+      - DEBUG='express:*'
