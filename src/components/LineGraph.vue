@@ -61,13 +61,10 @@ export default {
 
   methods: {
       setScale(){
-          console.log("Raech");
-          console.log(this.lineData);
           this.minX = 0;
           this.maxX = this.lineData.length;
           this.minY = Math.min(...this.lineData.map(o => o));
           this.maxY = Math.max(...this.lineData.map(o => o));
-          console.log(this.minX, this.maxX, this.minY, this.maxY);
       },
       prepData(){
           this.sanitizedData =  []
@@ -75,7 +72,6 @@ export default {
             var entry = { 'xVal' : index, 'yVal' : this.lineData[index] }
             this.sanitizedData.push(entry);
           }
-          console.log(this.sanitizedData);
       }
   },
 

@@ -2,20 +2,17 @@
     <div class= "col">
       <div class="card">
         <div class="card-header">
-          <span class="health"> {{ community.health_percentage }} </span>
+          <span class="health float-left"> {{ community.health_percentage }} </span>
           <span class="name"> {{ repo.full_name }} </span>
+          <span v-if="current" class="other card-subtitle mb-2 text-muted"> {{ current.name }}  </span>
+          <span class="other float-right"> {{ repo.stargazers_count }} <icon name="star"></icon> </span>
         </div>
         <div class="card-body">
           <CommitGraph :repo="repo"/>
-          <ul class="list-group col-6 col-sm-6">
-            <li v-for="(file, filename) in community.files" class="list-group-item">
-                <span class="float-left">{{ filename }}</span>
-                <span class="float-right">
-                  <icon v-if="file" name="check"></icon>
-                  <icon v-else name="times"></icon>
-                </span>
-            </li>
-          </ul>
+          <div class="row">
+            <CommunityFiles class="col-6" :files="community.files"/>
+            <Badges class="col-6" :repo="repo"/>
+          </div>
         </div>
       </div>
     </div>
@@ -25,11 +22,15 @@
 import github from 'octonode';
 import request from 'request';
 import CommitGraph from './CommitGraph';
+import CommunityFiles from './CommunityFiles';
+import Badges from './Badges';
 
 export default {
   name: 'RepoCard',
   components: {
-    CommitGraph
+    CommitGraph,
+    CommunityFiles,
+    Badges
   },  
 
   props: {
@@ -44,7 +45,7 @@ export default {
     return {
       community: {},
       tags: {},
-      readme: {},
+      current: {},
     }
   },
   created () {
@@ -55,12 +56,12 @@ export default {
     initGithub () {
       this.client = github.client();
       this.ghrepo = this.client.repo(this.repo.full_name);
+
       this.ghrepo.tags((err, data, headers) => {
         this.tags = data;
-      });
-      this.ghrepo.readme((err, data, headers) => {
-        this.readme = data;
-        console.log(this.readme);
+        if(this.tags.length > 0){
+          this.current = this.tags[0];
+        }
       });
 
       let uri = "https://api.github.com/repos/"+ this.repo.full_name + "/community/profile";
@@ -69,10 +70,9 @@ export default {
 
       request(req, (err, res, body) => {
           this.community = body;
-          console.log(this.community.files);
       });
-    },
 
+    },
   }
 }
 </script>
@@ -81,10 +81,13 @@ export default {
 <style scoped>
 
 .health {
-  font-size: 35px;
+  font-size: 30px;
 } 
 .name {
-  font-size: 25px;
+  font-size: 30px;
+} 
+.other {
+  font-size: 20px;
 } 
 h1, h2 {
   font-weight: normal;
