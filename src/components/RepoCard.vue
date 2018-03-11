@@ -5,6 +5,7 @@
         <span> {{ community.health_percentage }} </span>
         <span class="offset-1"> {{ repo.full_name }} </span>
       </div>
+      <CommitGraph :repo="repo"></CommitGraph>
       <ul class="list-group col-2">
         <li v-for="(file, filename) in community.files" class="list-group-item">
             <span class="float-left">{{ filename }}</span>
@@ -14,16 +15,19 @@
             </span>
         </li>
       </ul>
-      </b-card>
     </div>
 </template>
 
 <script>
 import github from 'octonode';
 import request from 'request';
+import CommitGraph from './CommitGraph';
 
 export default {
   name: 'RepoCard',
+  components: {
+    CommitGraph
+  },  
 
   props: {
     repo: {
@@ -40,7 +44,6 @@ export default {
       readme: {},
     }
   },
-
   created () {
     this.initGithub();
   },
