@@ -1,8 +1,11 @@
 <template>
   <div>
-    <ul>
-      <li v-for="html in badges" >
+    <ul class="list-group">
+      <li v-for="html in badges" class="list-group-item text-left">
             <span v-html="html"></span>
+      </li>
+      <li v-if="badges.length == 0" class="list-group-item text-left">
+            <span>No badges</span>
       </li>
     </ul>
   </div>
@@ -63,6 +66,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.list-group-item{
+  padding: 5px;
+  border: 0px;
+}
+
 p{
   margin-bottom: 2px;
 }

@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div style="position:relative">
+    <div style="position:relative" class="search-margin">
       <input class="form-control" type="text" v-model="searchtext"/>
-      <div style="width:100%">
-          <b-dropdown-item v-for="suggestion in suggestions">
-              <a href="#" v-on:click="select(suggestion)">{{ suggestion.full_name }}</a>
-          </b-dropdown-item>
-      </div>
+        <ul style="width:100%" class="list-group dropdown">
+            <li v-for="suggestion in suggestions" class="list-group-item">
+                <a href="#" v-on:click="select(suggestion)">{{ suggestion.full_name }}</a>
+            </li>
+        </ul>
     </div>
   </div>
 </template>
@@ -59,6 +59,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.dropdown{
+  z-index: 10;
+  position: absolute;
+  background-color: white;
+  border: 1px;
+}
+
+.search-margin {
+  margin-bottom: 20px;
+}
+
+.list-group-item {
+  padding: 5px;
+  margin: 0px;
+}
+
 h1, h2 {
   font-weight: normal;
 }

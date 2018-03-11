@@ -2,7 +2,7 @@
     <div class= "col">
       <div class="card">
         <div class="card-header">
-          <span class="health float-left"> {{ community.health_percentage }} </span>
+          <span :style="healthStyle" class="health float-left"> <icon style="margin-right: 5px" scale="1.25" name="heartbeat"></icon>{{ community.health_percentage }} %</span>
           <span class="name"> {{ repo.full_name }} </span>
           <span v-if="current" class="other card-subtitle mb-2 text-muted"> {{ current.name }}  </span>
           <span class="other float-right"> {{ repo.stargazers_count }} <icon name="star"></icon> </span>
@@ -48,22 +48,40 @@ export default {
       current: {},
     }
   },
+
   created () {
     this.initGithub();
+  },
+
+  computed : {
+    healthStyle () {  
+      if(this.community.health_percentage <= 33){
+        return {color: "red"};
+      }else if (this.community.health_percentage <= 66){
+        return {color: "orange"};
+      }
+      return {color: "green"};
+    }
   },
 
   methods: {
     initGithub () {
       this.client = github.client();
       this.ghrepo = this.client.repo(this.repo.full_name);
+      this.getTags();
+      this.getCommunity();
+    },
 
-      this.ghrepo.tags((err, data, headers) => {
+    getTags () {
+        this.ghrepo.tags((err, data, headers) => {
         this.tags = data;
         if(this.tags.length > 0){
           this.current = this.tags[0];
         }
       });
+    },
 
+    getCommunity () {
       let uri = "https://api.github.com/repos/"+ this.repo.full_name + "/community/profile";
       let headers = {"Accept": "application/vnd.github.black-panther-preview+json"};
       let req = {uri:uri, headers: headers, json:true};
@@ -71,7 +89,6 @@ export default {
       request(req, (err, res, body) => {
           this.community = body;
       });
-
     },
   }
 }
@@ -79,9 +96,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 .health {
   font-size: 30px;
+  color: green;
 } 
 .name {
   font-size: 30px;

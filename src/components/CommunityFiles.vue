@@ -1,10 +1,11 @@
 <template>
   <ul class="list-group">
     <li v-for="(file, filename) in files" class="list-group-item">
-        <span class="float-left">{{ filename }}</span>
+        <span class="float-left">{{ filename }} </span>
         <span class="float-right">
-          <icon v-if="file" name="check"></icon>
-          <icon v-else name="times"></icon>
+          <a v-if="file && file.name" class="font-weight-bold" :href="file.html_url"> {{ file.name }} </a>
+          <icon v-if="file" name="check" class="checkmark"></icon>
+          <icon v-else name="times" class="cross"></icon>
         </span>
     </li>
   </ul>
@@ -25,6 +26,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.checkmark {
+  color: green;
+}
+
+.cross {
+  color: red;
+}
 
 h1, h2 {
   font-weight: normal;
