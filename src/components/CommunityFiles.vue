@@ -26,7 +26,6 @@ export default {
     formatName (name) {
       name = name.replace(/_/g, ' ')
       let words = name.split(' ')
-      console.log(words)
       let capWords = []
       for (let word of words) {
         if (word != 'of') {
