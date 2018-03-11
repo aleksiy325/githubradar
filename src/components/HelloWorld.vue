@@ -1,7 +1,7 @@
 <template>
     <div class="main">
-      <h1>{{ msg }}</h1>
-      <h2>Essential Links</h2>
+      <h1>Welcome to Github Radar</h1>
+      <h2>Enter a repository name</h2>
       <SearchBar class="col-6 offset-3" v-on:selected="addRepo"/>
       <div class="row offset-1 col-10">
         <RepoCard  v-for="repo in repos" :repo="repo"/>
@@ -23,7 +23,6 @@ export default {
 
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
       loading: false,
       post: null,
       error: null,

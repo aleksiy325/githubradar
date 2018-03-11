@@ -6,6 +6,7 @@
           <span class="name"> {{ repo.full_name }} </span>
         </div>
         <div class="card-body">
+          <CommitGraph :repo="repo"/>
           <ul class="list-group col-6 col-sm-6">
             <li v-for="(file, filename) in community.files" class="list-group-item">
                 <span class="float-left">{{ filename }}</span>
