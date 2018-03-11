@@ -1,7 +1,7 @@
 <template>
     <div>
       <b-card :title="repo.full_name">
-        
+        <CommitGraph :repo="repo"></CommitGraph>
       </b-card>
     </div>
 </template>
@@ -9,9 +9,13 @@
 <script>
 import github from 'octonode';
 import request from 'request';
+import CommitGraph from './CommitGraph';
 
 export default {
   name: 'RepoCard',
+  components: {
+    CommitGraph
+  },  
 
   props: {
     repo: {
@@ -26,7 +30,6 @@ export default {
 
     }
   },
-
   created () {
     this.initGithub();
     console.log(this.repo);

@@ -2,18 +2,15 @@
   <div id="app">
     <img src="./assets/logo.png">
     <HelloWorld/>
-    <D3Example/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld'
-import D3Example from './components/D3Example'
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    D3Example
+    HelloWorld
   }
 }
 </script>
