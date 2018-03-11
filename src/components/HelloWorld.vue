@@ -2,19 +2,21 @@
     <div class="hello">
       <h1>{{ msg }}</h1>
       <h2>Essential Links</h2>
-      <SearchBar v-on:selected="visualizeRepo"/>
-      <h2> {{ repository.name }} </h2>
+      <SearchBar v-on:selected="addRepo"/>
+      <RepoCard  v-for="repo in repos" :repo="repo"/>
     </div>
 </template>
 
 <script>
 import github from 'octonode';
 import SearchBar from './SearchBar'
+import RepoCard from './RepoCard'
 
 export default {
   name: 'HelloWorld',
   components: {
-    SearchBar
+    SearchBar, 
+    RepoCard
   },
 
   data () {
@@ -23,7 +25,7 @@ export default {
       loading: false,
       post: null,
       error: null,
-      repository: {},
+      repos: [],
     }
   },
 
@@ -36,8 +38,8 @@ export default {
       this.client = github.client();
     },
 
-    visualizeRepo (repo) {
-      this.repository = repo;
+    addRepo (repo) {
+      this.repos.push(repo);
     }
 
   }

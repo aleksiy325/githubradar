@@ -37,7 +37,7 @@ export default {
           this.suggestions = body.items.splice(0, 5);
         });
       }
-    }, 50),
+    }, 150),
 
 
   },
