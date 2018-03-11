@@ -67,6 +67,7 @@ export default {
           this.maxX = this.lineData.length;
           this.minY = Math.min(...this.lineData.map(o => o));
           this.maxY = Math.max(...this.lineData.map(o => o));
+          console.log(this.minX, this.maxX, this.minY, this.maxY);
       },
       prepData(){
           this.sanitizedData =  []
@@ -74,6 +75,7 @@ export default {
             var entry = { 'xVal' : index, 'yVal' : this.lineData[index] }
             this.sanitizedData.push(entry);
           }
+          console.log(this.sanitizedData);
       }
   },
 
@@ -87,18 +89,16 @@ export default {
 
     var lineGen = d3.line()
     .x(function(d) {
+        // return d.xVal;
         return xScale(d.xVal);
     })
     .y(function(d) {
+        // return d.yVal;
         return yScale(d.yVal);
     })
     .curve(d3.curveBasis);
-    
-      // Create axes
-      const xAxis = d3.axisBottom().scale(xScale);
-      const yAxis =  d3.axisBottom().scale(yScale);
 
-      const commit_graph = d3.select("body").append('svg')
+      const commit_graph = d3.select(this.$el).append('svg')
         .attr('width', width + this.margins.left + this.margins.right)
         .attr('height', height + this.margins.top + this.margins.bottom)
         .append("g")
