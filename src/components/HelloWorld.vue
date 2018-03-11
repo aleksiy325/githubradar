@@ -4,7 +4,7 @@
       <h2>Enter a repository name</h2>
       <SearchBar class="col-6 offset-3" v-on:selected="addRepo"/>
       <div class="row offset-1 col-10">
-        <RepoCard  v-for="repo in repos" :repo="repo"/>
+        <RepoCard v-bind:class="size()" v-for="repo in repos" :repo="repo"/>
       </div>
     </div>
 </template>
@@ -41,7 +41,15 @@ export default {
 
     addRepo (repo) {
       this.repos.push(repo)
-    }
+    },
+
+    size () {
+      if(this.repos.length > 1){
+        console.log(this.repos.length);
+        return "col-6";
+      }
+      return "";
+    },
 
   }
 }
