@@ -80,7 +80,7 @@ export default {
           {
             data: this.commitData,
             label: 'all commits',
-            borderColor: '#8afc00',
+            borderColor: '#0dc466',
             fill: false
           }
         ]

@@ -118,19 +118,19 @@ export default {
           {
             data: openX,
             label: 'open',
-            borderColor: '#800000',
+            borderColor: '#ff1414',
             fill: false
           },
           {
             data: closedX,
             label: 'closed',
-            borderColor: '#008000',
+            borderColor: '#54d300',
             fill: false
           },
           {
             data: totalX,
             label: 'total',
-            borderColor: '#000008',
+            borderColor: '#0070d2',
             fill: false
           }
         ]
