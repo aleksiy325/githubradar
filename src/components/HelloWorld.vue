@@ -1,9 +1,11 @@
 <template>
-    <div class="hello">
+    <div class="main">
       <h1>{{ msg }}</h1>
       <h2>Essential Links</h2>
       <SearchBar v-on:selected="addRepo"/>
-      <RepoCard  v-for="repo in repos" :repo="repo"/>
+      <div class="row">
+        <RepoCard  v-for="repo in repos" :repo="repo"/>
+      </div>
     </div>
 </template>
 
@@ -48,6 +50,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#main{
+  text-align: center;
+
+}
+
 h1, h2 {
   font-weight: normal;
 }

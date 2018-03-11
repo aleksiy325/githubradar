@@ -1,7 +1,19 @@
 <template>
-    <div>
-      <b-card :title="repo.full_name">
-        
+    <div class= "col">
+      <b-card>
+      <div class="row">
+        <span> {{ community.health_percentage }} </span>
+        <span class="offset-1"> {{ repo.full_name }} </span>
+      </div>
+      <ul class="list-group col-2">
+        <li v-for="(file, filename) in community.files" class="list-group-item">
+            <span class="float-left">{{ filename }}</span>
+            <span class="float-right">
+              <icon v-if="file" name="check"></icon>
+              <icon v-else name="times"></icon>
+            </span>
+        </li>
+      </ul>
       </b-card>
     </div>
 </template>
@@ -23,13 +35,14 @@ export default {
 
   data () {
     return {
-
+      community: {},
+      tags: {},
+      readme: {},
     }
   },
 
   created () {
     this.initGithub();
-    console.log(this.repo);
   },
 
   methods: {
@@ -45,10 +58,11 @@ export default {
 
       let uri = "https://api.github.com/repos/"+ this.repo.full_name + "/community/profile";
       let headers = {"Accept": "application/vnd.github.black-panther-preview+json"};
-      let req = {uri:uri, headers: headers};
+      let req = {uri:uri, headers: headers, json:true};
 
       request(req, (err, res, body) => {
           this.community = body;
+          console.log(this.community.files);
       });
     },
 
