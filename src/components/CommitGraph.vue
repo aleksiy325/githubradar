@@ -45,7 +45,7 @@ export default {
       this.client = github.client();
       this.loading = true;
       this.post = null;
-      this.client.get('/repos/pksunkara/octonode/stats/participation', {}, (err, status, body, headers) => {
+      this.client.get('/repos/' + this.repo.full_name + '/stats/participation', {}, (err, status, body, headers) => {
           this.LineGraphData = Array.from(body["all"], x => x)
           console.log("Done query");
         //   console.log(this.LineGraphData);

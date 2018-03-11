@@ -15,10 +15,6 @@
 <script>
 import * as d3 from 'd3';
 
-
-
-
-
 export default {
   name: 'LineGraph',
   template: '<div></div>',
