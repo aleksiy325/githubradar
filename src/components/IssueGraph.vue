@@ -41,9 +41,7 @@ export default {
   },
   created () {
     this.initGithub();
-    this.query();
-    // this.fillData();
-    
+    this.query();    
   },
   data () {
     return {
@@ -63,140 +61,91 @@ export default {
 
     },
     query(){
-      var currentTime = moment().subtract(1, 'year').format('YYYY-MM-DDTHH:MM:SSZ');
-      console.log("currentTIMe", currentTime);
-      this.client.get('/repos/' + this.repo.full_name + '/issues', {state : "open", per_page : "100", since : currentTime }, (err, status, body, headers) => {
-        //   console.log(body);
-        //   this.LineGraphData = Array.from(body["all"], x => x)
-          this.loading = false;
-          this.post = true;
+      this.client.get('/repos/' + this.repo.full_name + '/issues', {state : "open", per_page : "100"}, (err, status, body, headers) => {
           this.openIssues = body;
+          this.client.get('/repos/' + this.repo.full_name + '/issues', {state : "closed", per_page : "100"}, (err, status, body, headers) => {
+            this.loading = false;
+            this.post = true;
+            this.closedIssues = body;
+            this.fillData();
+           });
       });
-      this.client.get('/repos/' + this.repo.full_name + '/issues', {state : "closed", per_page : "100", since : currentTime}, (err, status, body, headers) => {
-        //   console.log(body);
-        //   this.LineGraphData = Array.from(body["all"], x => x)
-          this.loading = false;
-          this.post = true;
-          this.closedIssues = body;
-          console.log("closed", this.closedIssues);
-          console.log("open", this.openIssues);
-          console.log("headers", headers);
-          this.fillData();
-
-      });
+      
     },
+
     fillData () {
-        const issues_in_year = {};
-        var currentTime = moment().format('MM/DD/YYYY');
-        // var storedString = currentTime.toISOString();
-        // console.log(currentTime);
-        var openIssuesData = {};
-        var closeIssuesData = {};
-
-        function setDay(issue) {
-            var previous_time = moment(issue['created_at']).format('MM/DD/YYYY');
-            var diff = moment(previous_time, 'MM/DD/YYYY').diff(currentTime, 'days');
-            diff = Math.abs(diff);
-            if (diff < 365){
-                console.log(issue['created_at'], previous_time, currentTime, diff);
-                // issue.set('from_now',365 - diff);
-                var newKey = 365 - diff;
-                if (newKey in issues_in_year){
-                    if (issue['state'] === "open"){
-                        console.log()
-                        issues_in_year[newKey] += 1;
-                        openIssuesData[newKey] +=  1;
-                        // console.log("new value in open",issues_in_year.get(newKey));
-                    }else{
-                        issues_in_year[newKey] -= 1;
-                        closeIssuesData[newKey] += 1;
-                        // console.log("new value in closed",issues_in_year.get(newKey));
-
-                    }                 
-                }else{
-                    // console.log("not in issue");
-                    if (issue['state'] === "open"){
-                        issues_in_year[newKey] = 1;
-                        openIssuesData[newKey] = 1;
-                        // console.log("new value in open",issues_in_year.get(newKey));
-                    }else{
-                        issues_in_year[newKey]  = -1;
-                        closeIssuesData[newKey] =  1;
-                        // console.log("new value in closed",issues_in_year.get(newKey));
-
-                    }     
-                }            
-            }
-            return issue;  
+        let allDates = {};
+        let openIssuesData = {};
+        let closedIssuesData = {};
+        
+        for(let issue of this.openIssues){
+          let date = moment(issue.created_at).format('YYYYMMDD');
+          allDates[date] = 0;
+          if(!(date in openIssuesData)){
+            openIssuesData[date] = 0;
+          }
+          openIssuesData[date] += 1;
         }
-        _.map(this.openIssues, setDay);
-        _.map(this.closedIssues, setDay);
 
-        console.log(closeIssuesData);
-        console.log(openIssuesData);
-
-        function getSeparateGraph(myData){
-            var sortedDate = Object.keys(issues_in_year) ;
-            sortedDate.sort();
-            var previous_val = 0;
-            // var myDataKey = Object.keys(issues_in_year);
-            for(var i = 0; i < sortedDate.length; i++){
-                if (sortedDate[i] in Object.keys(myData)){
-                    previous_val = myData[sortedDate[i]];
-                }else{
-                    myData[sortedDate[i]] = previous_val;
-                }
-            }
-            // return myData;
+        for(let issue of this.closedIssues){
+          let date = moment(issue.closed_at).format('YYYYMMDD');
+          allDates[date] = 0;
+          if(!(date in closedIssuesData)){
+            closedIssuesData[date] = 0;
+          }
+          closedIssuesData[date] += 1;
         }
-        getSeparateGraph(closeIssuesData);
-        getSeparateGraph(openIssuesData);
 
-        console.log(closeIssuesData);
-        console.log(openIssuesData);
+        let allDatesArr = Object.keys(allDates).sort();
+        let openX = [];
+        let closedX = [];
+        let openRunX = [];
+        let curAmount = 0;
+        let totalX = [];
 
-        // console.log(issues_in_year);
-        // console.log(issues_in_year.keys());
-        // console.log(issues_in_year.values());
+        for(let date of allDatesArr){
+          if(!(date in openIssuesData)){
+            openIssuesData[date] = 0;
+          }
+          if(!(date in closedIssuesData)){
+            closedIssuesData[date] = 0;
+          }
+          openX.push(openIssuesData[date]);
+          closedX.push(closedIssuesData[date]);
+          curAmount += openIssuesData[date];
+          curAmount -= closedIssuesData[date];
+          totalX.push(curAmount);
+        }
 
         this.IssueData = {
-            labels: Object.keys(issues_in_year),
+            labels: allDatesArr,
             datasets: [
                 {
-                    data : Object.values(openIssuesData),
+                    data : openX,
                     label: 'open',
                     borderColor: "#800000",
                     fill: false
                 },
                 {
-                    data : Object.values(closeIssuesData),
+                    data : closedX,
                     label: 'closed',
                     borderColor: "#008000",
                     fill: false
-                }                
+                },
+                {
+                    data : totalX,
+                    label: 'total',
+                    borderColor: "#000008",
+                    fill: false
+                }                             
             ] 
-            // [
-            // {
-            //     label: 'Data One',
-            //     backgroundColor: '#f87979',
-            //     data: [this.getRandomInt(), this.getRandomInt()]
-            // }, {
-            //     label: 'Data One',
-            //     backgroundColor: '#f87979',
-            //     data: [this.getRandomInt(), this.getRandomInt()]
-            // }
-            // ]
         }
         console.log("IssueData", this.IssueData);
     },
+
     getRandomInt () {
         return Math.floor(Math.random() * (50 - 5 + 1)) + 5
     }      
   },
-  mounted () {
-      this.fillData();      
-    //   console.log(this.IssueData);
-  },
-
 }
 </script>

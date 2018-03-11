@@ -10,15 +10,10 @@
         <div class="card-body">
           <!-- <CommitGraph :repo="repo"/> -->
           <IssueGraph :repo="repo"/>
-          <ul class="list-group col-6 col-sm-6">
-            <li v-for="(file, filename) in community.files" class="list-group-item">
-                <span class="float-left">{{ filename }}</span>
-                <span class="float-right">
-                  <icon v-if="file" name="check"></icon>
-                  <icon v-else name="times"></icon>
-                </span>
-            </li>
-          </ul>
+          <div class="row">
+            <CommunityFiles class="col-6" :files="community.files"/>
+            <Badges class="col-6" :repo="repo"/>
+          </div>
         </div>
       </div>
     </div>
