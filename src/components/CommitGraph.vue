@@ -1,61 +1,91 @@
 
-
-
 <template>
     <div  v-if="loading" class="loading">
       Loading...
     </div>
 
     <div v-else-if="post" class="content">
-        <LineGraph :lineData="LineGraphData"></LineGraph>
+        <line-chart
+        :chartData="commitDataGraph"
+        :options="{responsive: true, maintainAspectRatio: false}"
+        :width="600"
+        :height="400">
+        </line-chart>
     </div>
-
 </template>
 
-
 <script>
-import github from 'octonode';
-import LineGraph from './LineGraph';
+import github from 'octonode'
+import moment from 'moment'
+import _ from 'lodash'
+import {Line} from 'vue-chartjs'
+import LineChart from './LineChart'
+
 export default {
-  name: 'CommitGraph',
+  name: 'IssueGraph',
   components: {
-      LineGraph
+    LineChart
   },
   props: {
-      repo: {
-          type: Object,
-          required: true,
-          default: () => ({}),
-      }
+    repo: {
+      type: Object,
+      required: true,
+      default: () => ({})
+    }
   },
+
   created () {
-    this.initGithub();
+    this.initGithub()
+    this.query()
   },
+
   data () {
     return {
-        LineGraphData : null,
-        loading : false,
-        post : null
+      commitData: [],
+      commitDataGraph: {},
+      loading: false,
+      post: null
     }
-  },  
+  },
 
   methods: {
     initGithub () {
-    //   console.log(this.repo);
-      this.client = github.client();
-      this.loading = true;
-      this.post = null;
+      this.client = github.client()
+      this.loading = true
+      this.post = null
+    },
+
+    query () {
+      this.client = github.client()
+      this.loading = true
+      this.post = null
       this.client.get('/repos/' + this.repo.full_name + '/stats/participation', {}, (err, status, body, headers) => {
-          console.log(headers);
-          console.log(err);          
-          this.LineGraphData = Array.from(body["all"], x => x);
-        //   console.log("Done query");
-        //   console.log(this.LineGraphData);
-          this.loading = false;
-          this.post = true;
-        //   this.LineGraphData = [this.LineGraphData]
-      });
-    },  
+        this.commitData = Array.from(body['all'], x => x)
+        this.post = true
+        this.fillData()
+        this.loading = false
+      })
+    },
+
+    fillData () {
+      let i = 0
+      let y = _.map(this.commitData, () => {
+        i += 1
+        return 'Week ' + i.toString()
+      })
+
+      this.commitDataGraph = {
+        labels: y,
+        datasets: [
+          {
+            data: this.commitData,
+            label: 'all commits',
+            borderColor: '#8afc00',
+            fill: false
+          }
+        ]
+      }
+    }
   }
 }
 </script>

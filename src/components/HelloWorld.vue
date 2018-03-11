@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import github from 'octonode';
+import github from 'octonode'
 import SearchBar from './SearchBar'
 import RepoCard from './RepoCard'
 
 export default {
   name: 'HelloWorld',
   components: {
-    SearchBar, 
+    SearchBar,
     RepoCard
   },
 
@@ -26,21 +26,21 @@ export default {
       loading: false,
       post: null,
       error: null,
-      repos: [],
+      repos: []
     }
   },
 
   created () {
-    this.initGithub();
+    this.initGithub()
   },
 
   methods: {
     initGithub () {
-      this.client = github.client();
+      this.client = github.client()
     },
 
     addRepo (repo) {
-      this.repos.push(repo);
+      this.repos.push(repo)
     }
 
   }

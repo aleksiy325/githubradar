@@ -9,6 +9,7 @@
     "start": "npm run dev",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit",
+    "fix": "eslint --ext .js,.vue src test/unit ",
     "build": "node build/build.js"
   },
   "dependencies": {
@@ -19,10 +20,10 @@
     "lodash": "^4.17.5",
     "octonode": "^0.9.2",
     "vue": "^2.5.2",
-    "d3" : "^4.13.0",
-    "moment" : "^2.21.0",
-    "vue-chartjs" : "^3.2.1",
-    "chart.js" : "^2.x"
+    "d3": "^4.13.0",
+    "moment": "^2.21.0",
+    "vue-chartjs": "^3.2.1",
+    "chart.js": "^2.x"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -43,7 +44,7 @@
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
     "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.0.0",

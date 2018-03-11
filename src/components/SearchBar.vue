@@ -12,47 +12,46 @@
 </template>
 
 <script>
-import github from 'octonode';
-import _ from 'lodash'; 
+import github from 'octonode'
+import _ from 'lodash'
 
 export default {
   name: 'SearchBar',
 
   data () {
-    return { 
+    return {
       current: {},
-      searchtext: "",
-      suggestions: [],
+      searchtext: '',
+      suggestions: []
     }
   },
 
   created () {
-    this.initGithub();
+    this.initGithub()
   },
 
   watch: {
-    searchtext: _.debounce( function (text) {
-      if(text){
+    searchtext: _.debounce(function (text) {
+      if (text) {
         this.client.get('/search/repositories', { q: text }, (err, status, body, headers) => {
-          this.suggestions = body.items.splice(0, 5);
-        });
+          this.suggestions = body.items.splice(0, 5)
+        })
       }
-    }, 300),
-
+    }, 300)
 
   },
 
   methods: {
     initGithub () {
-      this.client = github.client();
+      this.client = github.client()
     },
 
     select (repo) {
-      this.current = repo;
-      this.suggestions = [];
-      this.searchtext = "";
-      this.$emit('selected', repo);
-    },
+      this.current = repo
+      this.suggestions = []
+      this.searchtext = ''
+      this.$emit('selected', repo)
+    }
   }
 }
 </script>

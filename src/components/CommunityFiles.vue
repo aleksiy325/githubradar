@@ -18,25 +18,25 @@ export default {
     files: {
       type: Object,
       required: true,
-      default: () => ({}),
+      default: () => ({})
     }
   },
 
   methods: {
-    formatName(name) {
-      name = name.replace(/_/g, ' ');
-      let words = name.split(" ");
-      console.log(words);
-      let capWords = [];
-      for(let word of words){
-        if(word != "of"){
-          word = word.charAt(0).toUpperCase() + word.slice(1);
+    formatName (name) {
+      name = name.replace(/_/g, ' ')
+      let words = name.split(' ')
+      console.log(words)
+      let capWords = []
+      for (let word of words) {
+        if (word != 'of') {
+          word = word.charAt(0).toUpperCase() + word.slice(1)
         }
-        capWords.push(word);
+        capWords.push(word)
       }
-      return capWords.join(" ");
-    },
-  },
+      return capWords.join(' ')
+    }
+  }
 }
 </script>
 

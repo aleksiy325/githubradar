@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import github from 'octonode';
-import showdown from 'showdown';
+import github from 'octonode'
+import showdown from 'showdown'
 
 export default {
   name: 'Badges',
@@ -21,42 +21,42 @@ export default {
     repo: {
       type: Object,
       required: true,
-      default: () => ({}),
+      default: () => ({})
     }
   },
 
   data () {
     return {
-      badges: [],
+      badges: []
     }
   },
   created () {
-    this.initGithub();
+    this.initGithub()
   },
 
   methods: {
     initGithub () {
-      this.client = github.client();
-      this.ghrepo = this.client.repo(this.repo.full_name);
-      this.parseBadges();
+      this.client = github.client()
+      this.ghrepo = this.client.repo(this.repo.full_name)
+      this.parseBadges()
     },
 
     parseBadges () {
-      let re = /\[!\[.*?]\(.*?\)]\(.*?\)/g;
-      let converter = new showdown.Converter();
+      let re = /\[!\[.*?]\(.*?\)]\(.*?\)/g
+      let converter = new showdown.Converter()
       this.ghrepo.readme((err, data, headers) => {
-        this.readme = data;
-        let markdown = atob(this.readme.content);
-        let test = markdown.match(re);
-        var matches;
-        this.badges = [];
-        while(matches = re.exec(markdown)){
-          let html = converter.makeHtml(matches[0]);
-          html = html.replace("<p>", "").replace("</p>", "");
-          this.badges.push(html);
+        this.readme = data
+        let markdown = atob(this.readme.content)
+        let test = markdown.match(re)
+        var matches
+        this.badges = []
+        while (matches = re.exec(markdown)) {
+          let html = converter.makeHtml(matches[0])
+          html = html.replace('<p>', '').replace('</p>', '')
+          this.badges.push(html)
         }
-      });
-    },
+      })
+    }
 
   }
 }

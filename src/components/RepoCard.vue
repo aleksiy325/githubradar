@@ -8,7 +8,7 @@
           <span class="other float-right"> {{ repo.stargazers_count }} <icon name="star"></icon> </span>
         </div>
         <div class="card-body">
-          <!-- <CommitGraph :repo="repo"/> -->
+          <CommitGraph :repo="repo"/>
           <IssueGraph :repo="repo"/>
           <div class="row">
             <CommunityFiles class="col-6" :files="community.files"/>
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import github from 'octonode';
-import request from 'request';
-import CommitGraph from './CommitGraph';
-import IssueGraph from './IssueGraph';
-import CommunityFiles from './CommunityFiles';
-import Badges from './Badges';
+import github from 'octonode'
+import request from 'request'
+import CommitGraph from './CommitGraph'
+import IssueGraph from './IssueGraph'
+import CommunityFiles from './CommunityFiles'
+import Badges from './Badges'
 
 export default {
   name: 'RepoCard',
@@ -34,13 +34,13 @@ export default {
     CommunityFiles,
     Badges,
     IssueGraph
-  },  
+  },
 
   props: {
     repo: {
       type: Object,
       required: true,
-      default: () => ({}),
+      default: () => ({})
     }
   },
 
@@ -48,51 +48,51 @@ export default {
     return {
       community: {},
       tags: {},
-      current: {},
+      current: {}
     }
   },
 
   created () {
-    this.initGithub();
+    this.initGithub()
   },
 
-  computed : {
-    healthStyle () {  
-      if(this.community.health_percentage <= 33){
-        return {color: "red"};
-      }else if (this.community.health_percentage <= 66){
-        return {color: "orange"};
+  computed: {
+    healthStyle () {
+      if (this.community.health_percentage <= 33) {
+        return {color: 'red'}
+      } else if (this.community.health_percentage <= 66) {
+        return {color: 'orange'}
       }
-      return {color: "green"};
+      return {color: 'green'}
     }
   },
 
   methods: {
     initGithub () {
-      this.client = github.client();
-      this.ghrepo = this.client.repo(this.repo.full_name);
-      this.getTags();
-      this.getCommunity();
+      this.client = github.client()
+      this.ghrepo = this.client.repo(this.repo.full_name)
+      this.getTags()
+      this.getCommunity()
     },
 
     getTags () {
-        this.ghrepo.tags((err, data, headers) => {
-        this.tags = data;
-        if(this.tags.length > 0){
-          this.current = this.tags[0];
+      this.ghrepo.tags((err, data, headers) => {
+        this.tags = data
+        if (this.tags.length > 0) {
+          this.current = this.tags[0]
         }
-      });
+      })
     },
 
     getCommunity () {
-      let uri = "https://api.github.com/repos/"+ this.repo.full_name + "/community/profile";
-      let headers = {"Accept": "application/vnd.github.black-panther-preview+json"};
-      let req = {uri:uri, headers: headers, json:true};
+      let uri = 'https://api.github.com/repos/' + this.repo.full_name + '/community/profile'
+      let headers = {'Accept': 'application/vnd.github.black-panther-preview+json'}
+      let req = {uri: uri, headers: headers, json: true}
 
       request(req, (err, res, body) => {
-          this.community = body;
-      });
-    },
+        this.community = body
+      })
+    }
   }
 }
 </script>
@@ -102,13 +102,13 @@ export default {
 .health {
   font-size: 30px;
   color: green;
-} 
+}
 .name {
   font-size: 30px;
-} 
+}
 .other {
   font-size: 20px;
-} 
+}
 h1, h2 {
   font-weight: normal;
 }
