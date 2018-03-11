@@ -47,13 +47,11 @@ export default {
       this.ghrepo.readme((err, data, headers) => {
         this.readme = data;
         let markdown = atob(this.readme.content);
-        console.log(markdown);
         let test = markdown.match(re);
         var matches;
         this.badges = [];
         while(matches = re.exec(markdown)){
           let html = converter.makeHtml(matches[0]);
-          console.log(html);
           html = html.replace("<p>", "").replace("</p>", "");
           this.badges.push(html);
         }
