@@ -14,18 +14,30 @@
             <CommunityFiles class="col-6" :files="community.files"/>
             <Badges class="col-6" :repo="repo"/>
           </div>
+          <ul class="list-group col-6 col-sm-6">
+            <li v-for="(file, filename) in community.files" class="list-group-item">
+                <span class="float-left">{{ filename }}</span>
+                <span class="float-right">
+                  <icon v-if="file" name="check"></icon>
+                  <icon v-else name="times"></icon>
+                </span>
+            </li>
+          </ul>
+          <Referers :repo="repo"/>
         </div>
       </div>
     </div>
 </template>
 
 <script>
-import github from 'octonode'
-import request from 'request'
-import CommitGraph from './CommitGraph'
-import IssueGraph from './IssueGraph'
-import CommunityFiles from './CommunityFiles'
-import Badges from './Badges'
+import github from 'octonode';
+import request from 'request';
+import CommitGraph from './CommitGraph';
+import IssueGraph from './IssueGraph';
+import CommunityFiles from './CommunityFiles';
+import Badges from './Badges';
+import Referers from './Referers';
+
 
 export default {
   name: 'RepoCard',
@@ -33,7 +45,8 @@ export default {
     CommitGraph,
     CommunityFiles,
     Badges,
-    IssueGraph
+    IssueGraph,
+    Referers
   },
 
   props: {
