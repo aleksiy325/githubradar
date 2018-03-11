@@ -1,15 +1,12 @@
 <template>
     <div class= "col">
-      <b-card>
-        <div class="row">
-          <span> {{ community.health_percentage }} </span>
-          <span class="offset-1"> {{ repo.full_name }} </span>
+      <div class="card">
+        <div class="card-header">
+          <span class="health"> {{ community.health_percentage }} </span>
+          <span class="name"> {{ repo.full_name }} </span>
         </div>
-        <div>
-          <CommitGraph :repo="repo"></CommitGraph>
-        </div>
-        <div>
-          <ul class="list-group col-2">
+        <div class="card-body">
+          <ul class="list-group col-6 col-sm-6">
             <li v-for="(file, filename) in community.files" class="list-group-item">
                 <span class="float-left">{{ filename }}</span>
                 <span class="float-right">
@@ -19,7 +16,7 @@
             </li>
           </ul>
         </div>
-      </b-card>
+      </div>
     </div>
 </template>
 
@@ -62,6 +59,7 @@ export default {
       });
       this.ghrepo.readme((err, data, headers) => {
         this.readme = data;
+        console.log(this.readme);
       });
 
       let uri = "https://api.github.com/repos/"+ this.repo.full_name + "/community/profile";
@@ -80,6 +78,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.health {
+  font-size: 35px;
+} 
+.name {
+  font-size: 25px;
+} 
 h1, h2 {
   font-weight: normal;
 }

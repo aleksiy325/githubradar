@@ -2,8 +2,8 @@
     <div class="main">
       <h1>{{ msg }}</h1>
       <h2>Essential Links</h2>
-      <SearchBar v-on:selected="addRepo"/>
-      <div class="row">
+      <SearchBar class="col-6 offset-3" v-on:selected="addRepo"/>
+      <div class="row offset-1 col-10">
         <RepoCard  v-for="repo in repos" :repo="repo"/>
       </div>
     </div>
