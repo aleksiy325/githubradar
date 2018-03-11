@@ -41,13 +41,15 @@ export default {
 
   methods: {
     initGithub () {
-      console.log(this.repo);
+    //   console.log(this.repo);
       this.client = github.client();
       this.loading = true;
       this.post = null;
       this.client.get('/repos/' + this.repo.full_name + '/stats/participation', {}, (err, status, body, headers) => {
-          this.LineGraphData = Array.from(body["all"], x => x)
-          console.log("Done query");
+          console.log(headers);
+          console.log(err);          
+          this.LineGraphData = Array.from(body["all"], x => x);
+        //   console.log("Done query");
         //   console.log(this.LineGraphData);
           this.loading = false;
           this.post = true;

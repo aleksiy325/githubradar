@@ -9,6 +9,23 @@
     font-family: Lato;
     font-size : 13px;
 }
+
+#chart {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+#svg-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 </style>
 
 
@@ -18,6 +35,7 @@ import * as d3 from 'd3';
 export default {
   name: 'LineGraph',
   template: '<div></div>',
+  
 
   props: {
       lineData: {
@@ -50,7 +68,7 @@ export default {
         //   totalWidth : 0,
         //   totalHeight :0,
           margins : {
-            top : 20,
+            top : 30,
             right : 20,
             bottom : 20,
             left : 50
@@ -61,10 +79,13 @@ export default {
 
   methods: {
       setScale(){
+        //   console.log("Raech");
+        //   console.log(this.lineData);
           this.minX = 0;
           this.maxX = this.lineData.length;
           this.minY = Math.min(...this.lineData.map(o => o));
           this.maxY = Math.max(...this.lineData.map(o => o));
+        //   console.log(this.minX, this.maxX, this.minY, this.maxY);
       },
       prepData(){
           this.sanitizedData =  []
@@ -72,6 +93,7 @@ export default {
             var entry = { 'xVal' : index, 'yVal' : this.lineData[index] }
             this.sanitizedData.push(entry);
           }
+        //   console.log(this.sanitizedData);
       }
   },
 
@@ -94,12 +116,26 @@ export default {
     })
     .curve(d3.curveBasis);
 
-      const commit_graph = d3.select(this.$el).append('svg')
+
+      const commit_graph = d3.select(this.$el)
+        .append('svg')
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        // .attr('id', 'svg-content-responsive')     
+        // .attr('id', 'svg-container')   
         .attr('width', width + this.margins.left + this.margins.right)
         .attr('height', height + this.margins.top + this.margins.bottom)
+        // .attr('viewBox', '0 0 ' + (this.width + this.margins.left + this.margins.right) + ' ' + (this.height + this.margins.top + this.margins.bottom))
         .append("g")
-        .attr("transform", "translate(" + this.margins.left + "," + this.margins.top + ")");
-      
+        .attr("transform", "translate(" + this.margins.left + "," + this.margins.top + ")")
+
+    //  commit_graph.append("text")
+    //     .attr("class", "title")
+    //     .attr("x", (width / 2))             
+    //     .attr("y",  0)
+    //     .attr("text-anchor", "middle") 
+    //     .style("font-size", "14px") 
+    //     .text("Weekly Commits Frequency over the past year");
+        
       // Add the X Axis
       commit_graph.append("g")
         .attr("transform", "translate(0," + height + ")")
