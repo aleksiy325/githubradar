@@ -13,6 +13,7 @@
           <div class="row">
             <CommunityFiles class="col-6" :files="community.files"/>
             <Badges class="col-6" :repo="repo"/>
+            <Referers :repo="repo"/>
           </div>
         </div>
       </div>
@@ -26,6 +27,7 @@ import CommitGraph from './CommitGraph'
 import IssueGraph from './IssueGraph'
 import CommunityFiles from './CommunityFiles'
 import Badges from './Badges'
+import Referers from './Referers'
 
 export default {
   name: 'RepoCard',
@@ -33,7 +35,8 @@ export default {
     CommitGraph,
     CommunityFiles,
     Badges,
-    IssueGraph
+    IssueGraph,
+    Referers
   },
 
   props: {

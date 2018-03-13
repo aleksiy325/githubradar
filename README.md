@@ -1,27 +1,16 @@
-# githubradar
+### Inspiration
+Software developers often find it hard to choose between different github libraries to use for their tasks. Choosing the wrong tools can cost a lot of development time and effort.
 
-> A Vue.js project
+### What it does
+GithubRadar carefullly investigates github repositories and compare them based on calculated metrics so that users can judge each repositories and choose the right tool for their use.
 
-## Build Setup
+### How we built it
+GithubRadar was built using Nodejs, vuejs and d3.js library all running on docker.
 
-``` bash
-# install dependencies
-npm install
+### What we learned
+I (Duc) learned how to run a docker environment and using d3.js and vue.js
 
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### What's next for GithubRadar
+Extract more features from the GithubAPI and make more charts!
+### Try it out
+https://githubradar.info/
